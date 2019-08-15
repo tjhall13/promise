@@ -1,7 +1,3 @@
-import faulthandler
-import sys
-faulthandler.enable(file=sys.stdout)
-
 from collections import namedtuple
 from functools import partial, wraps
 from sys import version_info, exc_info
@@ -230,9 +226,11 @@ class Promise(Generic[T]):
 
     def _fulfill(self, value):
         # type: (T) -> None
+        print('_fulfill:', value)
         if value is self:
             err = make_self_resolution_error()
             # self._attach_extratrace(err)
+            print('_fulfill: reject')
             return self._reject(err)
         self._state = STATE_FULFILLED
         self._rejection_handler0 = value
@@ -242,6 +240,7 @@ class Promise(Generic[T]):
                 self._settle_promises()
             else:
                 async_instance.settle_promises(self)
+        print('_fulfill: done')
 
     def _reject(self, reason, traceback=None):
         # type: (Exception, Optional[TracebackType]) -> None
@@ -352,9 +351,7 @@ class Promise(Generic[T]):
             error, tb = error_with_tb
             promise._reject_callback(error, False, tb)
         else:
-            print('a')
             promise._resolve_callback(value)
-            print('b')
 
     def _promise_at(self, index):
         # type: (int) -> Optional[Promise]
