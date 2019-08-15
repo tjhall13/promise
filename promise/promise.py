@@ -1,3 +1,6 @@
+import faulthandler
+faulthandler.enable()
+
 from collections import namedtuple
 from functools import partial, wraps
 from sys import version_info, exc_info
@@ -342,9 +345,7 @@ class Promise(Generic[T]):
 
     def _settle_promise_from_handler(self, handler, value, promise):
         # type: (Callable, Any, Promise) -> None
-        print('_settle_promise_from_handler:', handler, value)
         value, error_with_tb = try_catch(handler, value)  # , promise
-        print('value:', value)
 
         if error_with_tb:
             error, tb = error_with_tb
