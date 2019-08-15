@@ -226,11 +226,9 @@ class Promise(Generic[T]):
 
     def _fulfill(self, value):
         # type: (T) -> None
-        print('_fulfill:', value)
         if value is self:
             err = make_self_resolution_error()
             # self._attach_extratrace(err)
-            print('_fulfill: reject')
             return self._reject(err)
         self._state = STATE_FULFILLED
         self._rejection_handler0 = value
@@ -239,8 +237,9 @@ class Promise(Generic[T]):
             if self._is_async_guaranteed:
                 self._settle_promises()
             else:
+                print('settle_promises:', value)
                 async_instance.settle_promises(self)
-        print('_fulfill: done')
+                print('settle_promises: done')
 
     def _reject(self, reason, traceback=None):
         # type: (Exception, Optional[TracebackType]) -> None
