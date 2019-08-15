@@ -352,7 +352,9 @@ class Promise(Generic[T]):
             error, tb = error_with_tb
             promise._reject_callback(error, False, tb)
         else:
+            print('a')
             promise._resolve_callback(value)
+            print('b')
 
     def _promise_at(self, index):
         # type: (int) -> Optional[Promise]
