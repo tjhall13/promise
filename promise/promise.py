@@ -1,5 +1,6 @@
 import faulthandler
-faulthandler.enable()
+import sys
+faulthandler.enable(file=sys.stdout)
 
 from collections import namedtuple
 from functools import partial, wraps
